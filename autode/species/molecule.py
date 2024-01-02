@@ -28,6 +28,7 @@ class Molecule(Species):
         solvent_name: Optional[str] = None,
         charge: Optional[int] = None,
         mult: Optional[int] = None,
+        canonicalize: bool = True,
         **kwargs,
     ):
         """
@@ -49,6 +50,8 @@ class Molecule(Species):
 
             mult: Spin multiplicity on the molecule. If unspecified defaults to, if
                   present, that defined in a xyz file or 1
+
+            canonicalize: Whether to canonicalize the SMILES string.
 
         Keyword Arguments:
             name: Name of the molecule. Overrides arg if arg is not a .xyz
@@ -76,6 +79,12 @@ class Molecule(Species):
 
         if smiles is not None:
             assert not _is_xyz_filename(arg), "Can't be both SMILES and file"
+
+            if canonicalize:
+                smiles = AllChem.MolToSmiles(
+                    AllChem.MolFromSmiles(smiles)
+                )
+
             self._init_smiles(smiles, charge=charge)
 
         # If the name is unassigned use a more interpretable chemical formula
