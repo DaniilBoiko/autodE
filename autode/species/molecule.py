@@ -28,7 +28,7 @@ class Molecule(Species):
         solvent_name: Optional[str] = None,
         charge: Optional[int] = None,
         mult: Optional[int] = None,
-        canonicalize: bool = True,
+        canonicalize: Optional[bool] = True,
         **kwargs,
     ):
         """
